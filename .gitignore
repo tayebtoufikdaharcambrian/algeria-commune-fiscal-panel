@@ -22,3 +22,6 @@ Thumbs.db
 # Temp
 *.tmp
 *.log
+
+# Raw inputs (not redistributed)
+data/raw/

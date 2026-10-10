@@ -3,8 +3,8 @@
 ## File 1: `algeria_commune_fiscal_panel_2010_2020.csv`
 
 One row per commune per year. All monetary values are **nominal Algerian dinars (DZD)**,
-as recorded in the administrative source files. No deflation is applied; see article
-Section 4.2 and Appendix A.5 for the inflation-invariance argument.
+as recorded in the administrative source files. No deflation is applied; all statistics computed in `code/` are within-year ratios, scale-invariant inequality
+indices or rank measures, so common price levels cancel.
 
 ### Identifier variables
 
@@ -71,7 +71,7 @@ All eight lines are drawn from the annual DGCL fiscal files and represent **oper
 
 One row per commune (1,541 rows). Fixed at the 2008 RGPH territorial organisation.
 
-### Key variables used in the article
+### Key variables
 
 | Variable | Source | Description |
 |---|---|---|
@@ -85,7 +85,7 @@ One row per commune (1,541 rows). Fixed at the 2008 RGPH territorial organisatio
 | `near_coast_50km` | Derived | 1 if `distance_to_coast_km ≤ 50`, else 0 |
 | `elevation_mean_m` | SRTM DEM | Mean elevation within commune boundary |
 | `macro_physical_region` | Author classification | One of: `Tell / northern coastal-mountain belt` · `High Plateaus / steppe belt` · `Saharan belt` |
-| `settlement_character_2008` | RGPH 2008 settlement layer | Five-class typology based on shares of ACL (chef-lieu agglomeration), AS (secondary agglomeration), and dispersed zone population — see article Appendix A.2 |
+| `settlement_character_2008` | RGPH 2008 settlement layer | Five-class typology based on shares of ACL (chef-lieu agglomeration), AS (secondary agglomeration), and dispersed zone population |
 | `commune_area_size_class` | Derived | Categorical area size class |
 
 ### Settlement character typology (five classes)
@@ -109,4 +109,46 @@ One row per commune (1,541 rows). Fixed at the 2008 RGPH territorial organisatio
 
 > **Boundary caveat:** Administrative boundary vintages do not reproduce every historical
 > legal delimitation exactly. This does not affect the orders of magnitude reported, and is
-> documented in article Appendix A.2.
+> documented in `docs/DATA_SOURCES.md`.
+
+
+---
+
+## 3. `crosswalk_fiscal_to_rgph2008.csv` (added in v1.1)
+
+One row per commune (1,541). Maps the commune sequence number used in the fiscal files
+to the sequence number of the 2008 census (RGPH) master file. **Always join the fiscal
+panel to the census master through this file.** In four provinces the two numberings differ.
+
+| Variable | Description |
+|---|---|
+| `wilaya_code` | Province code (48-province system) |
+| `commune_seq_fiscal` | Commune sequence number as it appears in the fiscal panel (`commune_seq`) |
+| `commune_seq_rgph2008` | Commune sequence number in the census master |
+| `rgph2008_commune_id` | Census master identifier (`WW-SSSS`) |
+| `commune_name_fiscal` / `commune_name_rgph2008` | Names in each source |
+| `name_similarity` | Normalised string similarity of the two names (0–1); low values are renamed communes, verified against Arabic names |
+| `key_differs` | 1 if the two sequence numbers differ (94 communes: Blida 21, Algiers 21, Boumerdès 30, Tipaza 22) |
+
+Note: the English `commune_name` column of the census master contains a few label errors
+(e.g. Tindouf 37-0001 shows "(ACL)"; Aïn Témouchent 46-0003/46-0022 have English labels
+swapped). The Arabic name column `commune_name_ar` is authoritative.
+
+## 4. `commune_nightlights_2019.csv` (added in v1.1)
+
+Built by `code/nightlights.py`. One row per commune (1,541).
+
+| Variable | Description |
+|---|---|
+| `rgph2008_commune_id` | Census master identifier |
+| `commune_name` | Census master name |
+| `boundary_adm2_pcode` | OCHA COD-AB p-code used for the polygon join |
+| `viirs2019_sum_radiance_flaremasked` | Sum of VIIRS VNL v2.1 2019 average-masked radiance (nW/cm²/sr) over pixels whose centre falls in the commune polygon, after zeroing pixels within 3 km of any 2019 VNF flare site |
+| `vnf2019_flare_sites` | Number of 2019 VNF gas-flare sites located in the commune |
+
+## Known data issues
+
+- Commune 05-0061 (Larbaa, Batna) has no 2008 population in the census master and is
+  excluded from per-capita analyses.
+- TAP is zero or negative in 4 commune-years (1 in 2012, 3 in 2020); these are excluded
+  from log specifications.

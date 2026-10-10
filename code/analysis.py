@@ -1,15 +1,19 @@
 """
 analysis.py
 ===========
-Reproduces every figure, table, and statistic reported in:
+Fiscal-autonomy descriptives for the commune panel: Theil decomposition,
+autonomy distribution, Lorenz curve, settlement-morphology gradient and
+autonomy regressions.
 
-  Dahar, T. T. (2025). Uniform Law, Unequal Capacity: Fiscal Heteronomy and
-  the Limits of Regional Decentralisation in Algeria's Communes, 2010-2020.
-  Public Administration and Development. [under review]
+v1.1: fiscal records are now joined to the census master through
+data/processed/crosswalk_fiscal_to_rgph2008.csv. In v1.0 the join used the
+fiscal-file sequence number, which differs from the census numbering in
+Blida, Algiers, Boumerdes and Tipaza (94 communes). See CHANGELOG.md.
 
-Inputs (both in ../data/processed/):
+Inputs (in ../data/processed/):
   - algeria_commune_fiscal_panel_2010_2020.csv
   - rgph2008_communes_master_1541_geo_physical_enriched.csv
+  - crosswalk_fiscal_to_rgph2008.csv
 
 Outputs (written to ../figures/):
   - fig_theil.png             Figure 2: Theil decomposition 2010-2020
@@ -26,7 +30,7 @@ Requirements:
   Install: pip install pandas numpy matplotlib statsmodels scipy
 
 Author: Tayeb Toufik Dahar
-Repository: https://github.com/[author-handle]/algeria-commune-fiscal-panel
+Repository: https://github.com/tayebtoufikdaharcambrian/algeria-commune-fiscal-panel
 License: CC BY 4.0
 """
 
@@ -74,6 +78,10 @@ geo = pd.read_csv(
     os.path.join(DATA, 'rgph2008_communes_master_1541_geo_physical_enriched.csv'),
     low_memory=False
 )
+# v1.1: map fiscal-file sequence numbers to 2008 census sequence numbers
+_xw = pd.read_csv(os.path.join(DATA, 'crosswalk_fiscal_to_rgph2008.csv'))
+_xw = dict(zip(zip(_xw['wilaya_code'], _xw['commune_seq_fiscal']), _xw['commune_seq_rgph2008']))
+fiscal['commune_seq'] = [_xw[(int(w), int(s))] for w, s in zip(fiscal['wilaya_code'], fiscal['commune_seq'])]
 print(f"  Fiscal panel: {fiscal.shape[0]:,} rows × {fiscal.shape[1]} cols")
 print(f"  Geo master:   {geo.shape[0]:,} rows × {geo.shape[1]} cols")
 print(f"  Years in panel: {sorted(fiscal['YEAR'].unique())}")

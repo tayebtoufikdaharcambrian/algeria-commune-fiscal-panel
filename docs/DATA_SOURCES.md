@@ -59,6 +59,30 @@
 
 ---
 
+### 4. Night-time lights and gas flares (added in v1.1)
+
+- **VIIRS Nighttime Lights v2.1, annual 2019, average-masked** — Earth Observation Group,
+  Payne Institute for Public Policy, Colorado School of Mines (https://eogdata.mines.edu/products/vnl/).
+  Elvidge, C. D., Zhizhin, M., Ghosh, T., Hsu, F.-C., & Taneja, J. (2021). Annual time series of
+  global VIIRS nighttime lights derived from monthly averages: 2012 to 2019. *Remote Sensing*, 13(5), 922.
+  Free registration required; not redistributed.
+- **VIIRS Nightfire 2019 global gas-flaring site list** (World Bank Global Gas Flaring
+  Reduction Partnership / EOG). 193 Algerian sites (177 upstream, 8 refinery, 8 LNG).
+- **Commune polygons** — OCHA COD-AB Algeria, HDX dataset `cod-ab-dza`, layer `dza_admin2`
+  (1,541 communes, EPSG:4326).
+
+## What the TAP measures
+
+The TAP (taxe sur l'activité professionnelle) is levied on turnover, not value added. It is
+assessed on the turnover of each establishment or unit in the commune where that unit is
+installed, and paid to the tax office of that place; firms registered with the
+large-enterprise directorate (DGE) file centrally but report each unit's commune and turnover.
+Receipts therefore record where formal sales are booked, which can differ from where goods
+are produced. Rates changed in 2015 (1% production, 2% general, 2% with a 25% abatement for
+construction, 3% for pipeline transport of hydrocarbons), and from 2020 the IFU threshold fell
+from 30 to 15 million DA, moving more taxpayers into the TAP base. Users should keep these
+features in mind when interpreting TAP as an indicator of economic activity.
+
 ## Key methodological limitations
 
 1. **Frozen population denominator.** All per-capita measures use RGPH 2008 population. Communes that grew or declined significantly between 2008 and 2020 will have slightly biased per-capita figures. The autonomy ratio (the primary measure) is unaffected, as it does not use population.
@@ -67,15 +91,15 @@
 
 3. **Nominal values only.** No price deflation is applied. This is appropriate because: (a) the autonomy ratio is a within-year quotient in which a common deflator cancels; (b) the Theil T index is scale-invariant. Cross-year trend interpretations should note that nominal growth may partly reflect inflation.
 
-4. **Commune matching.** Of 1,541 communes, 1,523 (98.8%) match between the fiscal and geospatial files. The 18 unmatched cases are due to transliteration variants and all fall within the Tell belt; they are not a source of systematic selection bias (see Appendix A.2 in the article).
+4. **Commune matching (corrected in v1.1).** The fiscal files and the 2008 census number communes differently in Blida, Algiers, Boumerdès and Tipaza. Version 1.0 joined the two sources on province and sequence number, which dropped 18 communes and attached 76 others to the wrong census record in those four provinces. Version 1.1 joins them through `data/processed/crosswalk_fiscal_to_rgph2008.csv`, built by name matching within province and checked against Arabic names; all 1,541 communes now match. Statistics computed from fiscal data alone (concentration, Theil decomposition, rank persistence) are unaffected; statistics that combine fiscal and census or geographic variables changed slightly.
 
-5. **Missing fiscal years.** The years 2013 and 2017 are not available for upload here. The analysis covers years 2010–2020 with these two gaps. The Theil decomposition results for 2013 and 2017 reported in Figure 2 of the article were computed on the complete files held by the author.
+5. **Missing fiscal years.** The years 2013 and 2017 are not available for upload here. The analysis covers years 2010–2020 with these two gaps. The Theil decomposition results for 2013 and 2017 were computed on the complete files held by the author; the files themselves are not included here.
 
 ---
 
 ## Legal sources (not redistributed)
 
-The following Algerian legal texts are cited in the article and are available on the official Algerian legal database:
+The following Algerian legal texts are relevant to the data and are available on the official Algerian legal database:
 
 - **Law No. 11-10 of 22 June 2011** on the commune — JORA No. 37, 3 July 2011  
 - **Law No. 12-07 of 21 February 2012** on the wilaya — JORA No. 12, 29 February 2012  
