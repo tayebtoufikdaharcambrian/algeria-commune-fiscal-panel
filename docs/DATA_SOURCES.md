@@ -71,6 +71,11 @@
 - **Commune polygons** — OCHA COD-AB Algeria, HDX dataset `cod-ab-dza`, layer `dza_admin2`
   (1,541 communes, EPSG:4326).
 
+### 5. Coastline (added in v1.2)
+
+- **Natural Earth 1:10m physical coastline** (public domain), https://www.naturalearthdata.com.
+  Used for the distance from each commune centroid to the Algerian Mediterranean coastline.
+
 ## What the TAP measures
 
 The TAP (taxe sur l'activité professionnelle) is levied on turnover, not value added. It is
@@ -78,8 +83,9 @@ assessed on the turnover of each establishment or unit in the commune where that
 installed, and paid to the tax office of that place; firms registered with the
 large-enterprise directorate (DGE) file centrally but report each unit's commune and turnover.
 Receipts therefore record where formal sales are booked, which can differ from where goods
-are produced. Rates changed in 2015 (1% production, 2% general, 2% with a 25% abatement for
-construction, 3% for pipeline transport of hydrocarbons), and from 2020 the IFU threshold fell
+are produced. The 3% rate for pipeline transport of hydrocarbons dates from the supplementary finance law
+for 2008 (Ordinance 08-02, Art. 8); in 2015 the rate for production of goods fell to 1% and
+construction received a 25% abatement (Ordinance 15-01), and from 2020 the IFU threshold fell
 from 30 to 15 million DA, moving more taxpayers into the TAP base. Users should keep these
 features in mind when interpreting TAP as an indicator of economic activity.
 

@@ -152,3 +152,24 @@ Built by `code/nightlights.py`. One row per commune (1,541).
   excluded from per-capita analyses.
 - TAP is zero or negative in 4 commune-years (1 in 2012, 3 in 2020); these are excluded
   from log specifications.
+
+## 5. Geography fields after v1.2
+
+| Variable | Definition |
+|---|---|
+| `commune_centroid_lat`, `commune_centroid_lon` | Centroid of the OCHA commune polygon, computed in an Albers equal-area projection (lat_1 = 20, lat_2 = 35, lat_0 = 28, lon_0 = 3) |
+| `distance_to_coast_km` | Distance from the centroid to the Algerian Mediterranean coastline (Natural Earth 1:10m coastline, segments between 2.25 W and 8.7 E), in km |
+| `distance_to_coast_polygon_edge_km_v11` | v1.1 value: distance from the nearest point of the polygon to the coastline. Kept for reference only |
+| `near_coast_25km`, `near_coast_50km` | Centroid within 25 or 50 km of the coastline |
+| `coastal_commune_1km` | Polygon within 1 km of the coastline |
+| `boundary_match_method` | `name_verified_v1.2` for the ten communes whose polygon link was corrected |
+
+`geography_corrections_v1.2.csv` lists, for every commune, the v1.1 and v1.2 values of the
+polygon code, area, elevation, centroid, density and distance to the coast, with a flag for the
+ten re-linked communes.
+
+## Population fields
+
+`pop_total` in the census master is the 2008 census population and is used in all analyses.
+`population_rgph2008` in the fiscal panel is a reference population carried in the ministry
+files; it differs from the census for about a third of communes and is not used.

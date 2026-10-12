@@ -11,8 +11,9 @@ in particular the tax on professional activity (TAP), levied on the turnover of 
 establishment in the commune where it is located, give an annual, spatially exact record
 of formal taxable activity. This repository makes those records usable for research.
 
-**Current version: v1.1** (October 2026). See [CHANGELOG.md](CHANGELOG.md), including
-a correction to the commune matching in four provinces.
+**Current version: v1.2** (October 2026). See [CHANGELOG.md](CHANGELOG.md), which documents
+corrections to the fiscal-to-census matching (v1.1) and to the census-to-polygon links and
+the distance-to-coast variable (v1.2).
 
 ---
 
@@ -26,9 +27,12 @@ algeria-commune-fiscal-panel/
 │       ├── algeria_commune_fiscal_panel_2010_2020.csv            fiscal panel (13,869 commune-years)
 │       ├── rgph2008_communes_master_1541_geo_physical_enriched.csv  census + geography master
 │       ├── crosswalk_fiscal_to_rgph2008.csv                      join key between the two
-│       └── commune_nightlights_2019.csv                          VIIRS 2019 lights, flares masked
+│       ├── commune_nightlights_2019.csv                          VIIRS 2019 lights, flares masked
+│       └── geography_corrections_v1.2.csv                        log of v1.2 geographic corrections
 ├── code/
 │   ├── revision_analysis.py    spatial statistics, robustness and night-light validation
+│   ├── make_figures.py         produces the five figures of the paper
+│   ├── build_geography.py      verifies polygon links and computes centroids and coast distance
 │   ├── nightlights.py          builds commune_nightlights_2019.csv from the raw rasters
 │   └── analysis.py             fiscal-autonomy descriptives and figures
 ├── figures/
@@ -47,11 +51,13 @@ git clone https://github.com/tayebtoufikdaharcambrian/algeria-commune-fiscal-pan
 cd algeria-commune-fiscal-panel
 pip install pandas numpy scipy statsmodels matplotlib
 python code/revision_analysis.py     # all spatial statistics, printed with labels
+python code/make_figures.py          # the five figures of the paper
 python code/analysis.py              # fiscal-autonomy descriptives and figures
 ```
 
-`code/nightlights.py` additionally needs `rasterio geopandas rasterstats openpyxl` and
-three raw files listed in its header; its output is already included in `data/processed/`.
+`code/build_geography.py` and `code/nightlights.py` additionally need `geopandas shapely
+rasterio rasterstats openpyxl` and the raw files listed in their headers; their outputs are
+already included in `data/processed/`.
 
 **Joining the files:** always link the fiscal panel to the census master through
 `crosswalk_fiscal_to_rgph2008.csv`. The two sources number communes differently in
@@ -67,7 +73,8 @@ Authorities (DGCL), harmonised from legacy dBase and spreadsheet formats.
 
 **Census master.** The 1,541 communes of the 2008 census (RGPH), with population and
 housing variables transcribed from official ONS tables, plus area, density, elevation,
-distance to the coast, settlement type and OCHA boundary codes.
+distance from the commune centroid to the Algerian Mediterranean coast, settlement type and
+OCHA boundary codes. Its `pop_total` is the authoritative population for all analyses.
 
 **Night lights.** Commune totals of VIIRS 2019 night-time radiance with gas-flare sites
 masked, for validating fiscal measures against an independent indicator of activity.
@@ -89,7 +96,7 @@ of economic activity.
 @dataset{dahar_algeria_commune_fiscal_panel,
   author  = {Dahar, Tayeb Toufik},
   title   = {Algeria Commune Fiscal Panel, 2010--2020},
-  version = {1.1},
+  version = {1.2},
   year    = {2026},
   url     = {https://github.com/tayebtoufikdaharcambrian/algeria-commune-fiscal-panel}
 }

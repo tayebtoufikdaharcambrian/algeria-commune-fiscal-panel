@@ -94,7 +94,7 @@ print(f"Communes in panel: {P.rgph2008_commune_id.nunique()}")
 print(f"Commune keys re-assigned by crosswalk: {int(X.key_differs.sum())} "
       f"in provinces {sorted(X.loc[X.key_differs == 1, 'wilaya_code'].unique().tolist())}")
 print(f"2019 regression sample: {len(d19)}")
-print("Commune-years with TAP <= 0, by year:",
+print("Commune-years with TAP <= 0 (all are zeros; excluded from logs, Theil and persistence samples), by year:",
       P.groupby("YEAR").tax_professional_activity.apply(lambda s: int((s <= 0).sum())).to_dict())
 miss = G[~G.rgph2008_commune_id.isin(d19.rgph2008_commune_id)]
 print("Communes outside the 2019 sample:")
@@ -139,7 +139,7 @@ for r in (10, 25, 50):
     d19[f"lnd{r}"] = np.log((M @ pop) / (M @ area))
 Dm = Dkm.copy(); np.fill_diagonal(Dm, np.inf)
 own = pop / (0.66 * np.sqrt(area / np.pi))
-d19["lmp"] = np.log((pop[None, :] / np.maximum(Dm, 1)).sum(1) + own)
+d19["lmp"] = np.log((pop[None, :] / np.maximum(Dm, 1)).sum(1) + own)  # inter-centroid distances floored at 1 km
 for f in ["ltap_pc ~ lnd10 + elev + C(wilaya_code)", "ltap_pc ~ lnd25 + elev + C(wilaya_code)",
           "ltap_pc ~ lnd50 + elev + C(wilaya_code)", "ltap_pc ~ ldens + lmp + elev + C(wilaya_code)"]:
     m = cl(f, d19)
@@ -258,8 +258,29 @@ for lab, s in samples.items():
               f"R2={m.rsquared:.3f}")
 print(f"Top 10% share: lights {top_share(v.viirs2019_sum_radiance_flaremasked, 154):.3f}, "
       f"TAP {top_share(v.tax_professional_activity, 154):.3f}, population {top_share(v.pop_total, 154):.3f}")
-print(f"Theil within-province share (equal weights): lights "
-      f"{theil(v, 'viirs2019_sum_radiance_flaremasked', W)[2]:.3f}, TAP {theil(v, 'tax_professional_activity', W)[2]:.3f}")
+print(f"Spearman rank correlation, TAP and lights: {spearmanr(v.tax_professional_activity, v.viirs2019_sum_radiance_flaremasked)[0]:.3f}")
+topT = v.nlargest(154, "tax_professional_activity")
+print("Same group (top 154 communes by TAP): shares of TAP {:.3f}, lights {:.3f}, population {:.3f}".format(
+    topT.tax_professional_activity.sum() / v.tax_professional_activity.sum(),
+    topT.viirs2019_sum_radiance_flaremasked.sum() / v.viirs2019_sum_radiance_flaremasked.sum(),
+    topT.pop_total.sum() / v.pop_total.sum()))
+print("Theil T levels and within-province share, 2019 (T, between, within, within share):")
+for lab, col in [("TAP", "tax_professional_activity"), ("lights", "viirs2019_sum_radiance_flaremasked")]:
+    for wl, wc in [("equal weights", None), ("population weights", "pop_total")]:
+        T, B, sh = theil(v, col, W, wc)
+        print(f"  {lab:7s} {wl:18s} T={T:.4f} between={B:.4f} within={T - B:.4f} share={sh:.3f}")
+lead = []
+for w_, s_ in v.groupby(W):
+    i = s_.tax_professional_activity.idxmax()
+    lead.append((s_.tax_professional_activity[i] / s_.tax_professional_activity.sum(),
+                 s_.viirs2019_sum_radiance_flaremasked[i] / s_.viirs2019_sum_radiance_flaremasked.sum(),
+                 s_.pop_total[i] / s_.pop_total.sum()))
+print("Leading TAP commune per province, median share of province: TAP {:.3f} lights {:.3f} population {:.3f}".format(*np.median(np.array(lead), 0)))
+alg = v[v[W] == 16]; t5 = alg.nlargest(5, "tax_professional_activity")
+print("Algiers: top-5 TAP communes {} hold TAP {:.3f}, lights {:.3f}, population {:.3f}".format(
+    list(t5.commune_name), t5.tax_professional_activity.sum() / alg.tax_professional_activity.sum(),
+    t5.viirs2019_sum_radiance_flaremasked.sum() / alg.viirs2019_sum_radiance_flaremasked.sum(),
+    t5.pop_total.sum() / alg.pop_total.sum()))
 
 # Census 2008 count of dwellings used for professional purposes (second independent indicator)
 c = PANEL[(PANEL.YEAR == 2010) & (PANEL.tax_professional_activity > 0) & (PANEL.log_professional > 0)].copy()
