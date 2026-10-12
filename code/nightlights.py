@@ -15,11 +15,16 @@ Raw inputs (not redistributed; download them into data/raw/):
      OCHA COD-AB Algeria (HDX dataset cod-ab-dza), layer dza_admin2 (1,541 communes)
 
 Method:
+  - input grid: 15 arc-second pixels in geographic coordinates (WGS84, EPSG:4326);
+    values are average radiance in nW/cm2/sr;
   - clip the global raster to Algeria;
   - set to zero all pixels within 3 km of each Algerian flare site
     (upstream, refinery and LNG sites in the 2019 list);
-  - sum radiance within each commune polygon (pixel-centre rule);
-  - count flare sites per commune.
+  - sum radiance of the pixels whose centres fall inside each commune polygon
+    (no area weighting; zero-radiance pixels contribute zero);
+  - count flare sites per commune. Of the 193 sites, 192 fall inside commune polygons;
+    one LNG-terminal flare lies on the shoreline just outside the polygon edge and is
+    masked but not counted in any commune.
 
 Run:  python code/nightlights.py
 Requires: rasterio geopandas rasterstats pandas numpy openpyxl

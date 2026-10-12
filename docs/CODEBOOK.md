@@ -143,15 +143,17 @@ Built by `code/nightlights.py`. One row per commune (1,541).
 | `rgph2008_commune_id` | Census master identifier |
 | `commune_name` | Census master name |
 | `boundary_adm2_pcode` | OCHA COD-AB p-code used for the polygon join |
-| `viirs2019_sum_radiance_flaremasked` | Sum of VIIRS VNL v2.1 2019 average-masked radiance (nW/cm²/sr) over pixels whose centre falls in the commune polygon, after zeroing pixels within 3 km of any 2019 VNF flare site |
+| `viirs2019_sum_radiance_flaremasked` | Sum of VIIRS VNL v2.1 2019 average-masked radiance (nW/cm²/sr; 15 arc-second grid, WGS84) over pixels whose centre falls in the commune polygon, without area weighting, after zeroing pixels within 3 km of any of the 193 Algerian 2019 VNF flare sites |
 | `vnf2019_flare_sites` | Number of 2019 VNF gas-flare sites located in the commune |
 
 ## Known data issues
 
 - Commune 05-0061 (Larbaa, Batna) has no 2008 population in the census master and is
   excluded from per-capita analyses.
-- TAP is zero or negative in 4 commune-years (1 in 2012, 3 in 2020); these are excluded
-  from log specifications.
+- TAP is zero in 4 commune-years (El Khemis 2012; Chiffa, Sidi Medjahed and Mihoub 2020) and
+  never negative. For Chiffa 2020 every revenue line is zero after TAP of 309 million DA in 2019,
+  which indicates a missing report. All four are treated as missing in log specifications,
+  Theil indices, rank statistics and transition matrices.
 
 ## 5. Geography fields after v1.2
 

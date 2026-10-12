@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.2.1 — October 2026 (documentation only; no data or results changed)
+
+- `CHECKSUMS.sha256`: SHA-256 hashes of every file in `data/processed/`, so that the exact
+  files used for the submitted paper can be verified.
+- Night-light extraction documented in full in `code/nightlights.py` and `docs/CODEBOOK.md`:
+  composite, grid, units, pixel-centre inclusion rule, zero handling and flare mask.
+- Zero receipts documented: TAP is zero in four commune-years. For Chiffa (09-0008) in 2020
+  every revenue line is zero after TAP of 309 million DA in 2019, which indicates a missing
+  report. All four are treated as missing in logarithmic specifications, Theil indices, rank
+  statistics and transition matrices.
+- The submitted paper corresponds to tag `v1.2.1`.
+
 ## v1.2 — October 2026
 
 ### Correction: census communes to boundary polygons

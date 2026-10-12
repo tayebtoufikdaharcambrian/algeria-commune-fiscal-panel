@@ -11,7 +11,7 @@ in particular the tax on professional activity (TAP), levied on the turnover of 
 establishment in the commune where it is located, give an annual, spatially exact record
 of formal taxable activity. This repository makes those records usable for research.
 
-**Current version: v1.2** (October 2026). See [CHANGELOG.md](CHANGELOG.md), which documents
+**Current version: v1.2.1** (October 2026), tagged `v1.2.1`; file hashes in `CHECKSUMS.sha256`. See [CHANGELOG.md](CHANGELOG.md), which documents
 corrections to the fiscal-to-census matching (v1.1) and to the census-to-polygon links and
 the distance-to-coast variable (v1.2).
 
@@ -96,7 +96,7 @@ of economic activity.
 @dataset{dahar_algeria_commune_fiscal_panel,
   author  = {Dahar, Tayeb Toufik},
   title   = {Algeria Commune Fiscal Panel, 2010--2020},
-  version = {1.2},
+  version = {1.2.1},
   year    = {2026},
   url     = {https://github.com/tayebtoufikdaharcambrian/algeria-commune-fiscal-panel}
 }
