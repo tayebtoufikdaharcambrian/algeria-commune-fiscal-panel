@@ -10,6 +10,7 @@
   every revenue line is zero after TAP of 309 million DA in 2019, which indicates a missing
   report. All four are treated as missing in logarithmic specifications, Theil indices, rank
   statistics and transition matrices.
+- `.zenodo.json` and `CITATION.cff` added so that the release is archived on Zenodo with a DOI.
 - The submitted paper corresponds to tag `v1.2.1`.
 
 ## v1.2 — October 2026

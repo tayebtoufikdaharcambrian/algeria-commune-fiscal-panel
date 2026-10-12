@@ -1,0 +1,25 @@
+{
+  "title": "Algeria Commune Fiscal Panel, 2010-2020",
+  "upload_type": "dataset",
+  "version": "1.2.1",
+  "description": "<p>An annual panel of local tax receipts for all 1,541 communes of Algeria (2010, 2011, 2012, 2014, 2015, 2016, 2018, 2019 and 2020), matched to a geospatially enriched file of the 2008 population census, with commune totals of flare-masked VIIRS night lights for 2019, a fiscal-to-census crosswalk, a log of geographic corrections, and the Python code that reproduces every table, figure and statistic in the associated paper on local turnover-tax receipts and the geography of taxable activity. Documentation of variables, sources and limitations is in docs/CODEBOOK.md and docs/DATA_SOURCES.md.</p>",
+  "creators": [
+    {
+      "name": "Dahar, Tayeb Toufik",
+      "affiliation": "Faculty of Law, University of Algiers 1",
+      "orcid": "0009-0006-1137-3189"
+    }
+  ],
+  "license": "cc-by-4.0",
+  "access_right": "open",
+  "keywords": [
+    "Algeria",
+    "communes",
+    "local public finance",
+    "tax on professional activity",
+    "night lights",
+    "VIIRS",
+    "spatial inequality",
+    "panel data"
+  ]
+}

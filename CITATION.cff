@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use this dataset, please cite it as below."
+title: "Algeria Commune Fiscal Panel, 2010-2020"
+type: dataset
+version: 1.2.1
+date-released: 2026-10-12
+license: CC-BY-4.0
+repository-code: "https://github.com/tayebtoufikdaharcambrian/algeria-commune-fiscal-panel"
+authors:
+  - family-names: Dahar
+    given-names: Tayeb Toufik
+    affiliation: "Faculty of Law, University of Algiers 1"
+    orcid: "https://orcid.org/0009-0006-1137-3189"
